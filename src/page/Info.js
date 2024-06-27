@@ -155,12 +155,12 @@ import ErrorMessage from "./components/ErrorMessage";
 import { useEffect, useState } from "react";
 
 const Icons = {
-  suhu1: <MdThermostat size="32px" />,
-  suhu2: <TbTemperature size="32px" />,
-  kelembapan1: <WiHumidity size="40px" />,
-  kelembapan2: <IoIosWater size="40px" />,
-  berat1: <FaWeight size="32px" />,
-  berat2: <FaWeight size="32px" />,
+  Suhu1: <MdThermostat size="32px" />,
+  Suhu2: <TbTemperature size="32px" />,
+  Kelembapan1: <WiHumidity size="40px" />,
+  Kelembapan2: <IoIosWater size="40px" />,
+  Berat1: <FaWeight size="32px" />,
+  Berat2: <FaWeight size="32px" />,
 };
 
 function isString(x) {
