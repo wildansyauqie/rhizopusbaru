@@ -107,7 +107,7 @@ export default function Stats({ dark }) {
     [date]
   );
 
-  const [{ data, error }, reexecute] = useSelect("data", { filter });
+  const [{ data, error }, reexecute] = useSelect("maintable", { filter });
 
   useSubscription(
     () => {
@@ -115,7 +115,7 @@ export default function Stats({ dark }) {
     },
     {
       event: "INSERT",
-      table: "data",
+      table: "maintable",
     }
   );
 
