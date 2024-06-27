@@ -180,10 +180,10 @@ export default function Info() {
   }, []);
 
   const filter = useFilter((query) =>
-    query.order("time", { ascending: false }).limit(1)
+    query.order("timestamp", { ascending: false }).limit(1)
   );
 
-  const [{ data, error }] = useRealtime("data", {
+  const [{ data, error }] = useRealtime("maintable", {
     select: { filter },
   });
 
@@ -191,7 +191,7 @@ export default function Info() {
   if (error) return <ErrorMessage error={error} />;
 
   const latestData = data[data.length - 1];
-  const isDataStale = now - new Date(latestData.time) > latestData.refresh;
+  const isDataStale = now - new Date(latestData.timestamp) > 300000; // 5 menit
 
   return (
     <div className="flex flex-col w-full justify-center items-center h-screen">
@@ -243,25 +243,31 @@ export default function Info() {
           </div>
         </div>
         <div className="stats shadow-md bg-gray-200 dark:bg-slate-800 stats-vertical lg:stats-horizontal mb-2">
-          {latestData.data.map((item, index) => (
-            <div className="stat" key={index}>
-              <div className="stat-figure dark:text-secondary text-primary">
-                {Icons[item.type] || null}
-              </div>
-              <div className="stat-title text-stone-700 dark:text-stone-300">
-                {item.name}
-              </div>
-              <div className="stat-value text-cyan-900 dark:text-stone-300">
-                {isString(item.value) ? item.value : `${item.value.toFixed(1)} ${item.unit}`}
-              </div>
-            </div>
-          ))}
+          {Object.entries(latestData).map(([key, value]) => {
+            if (Icons[key]) {
+              return (
+                <div className="stat" key={key}>
+                  <div className="stat-figure dark:text-secondary text-primary">
+                    {Icons[key]}
+                  </div>
+                  <div className="stat-title text-stone-700 dark:text-stone-300">
+                    {key}
+                  </div>
+                  <div className="stat-value text-cyan-900 dark:text-stone-300">
+                    {isString(value) ? value : value.toFixed(1)}
+                  </div>
+                </div>
+              );
+            }
+            return null;
+          })}
         </div>
         <p className="text-xs opacity-60 text-center">
           Diperbaharui{" "}
-          <Moment format="DD MMMM YYYY, HH:mm">{latestData.time}</Moment>
+          <Moment format="DD MMMM YYYY, HH:mm">{latestData.timestamp}</Moment>
         </p>
       </div>
     </div>
   );
 }
+
